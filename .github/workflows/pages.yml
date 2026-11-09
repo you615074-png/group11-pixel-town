@@ -1,0 +1,46 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      # 真实成员数据不在仓库里：从仓库 Secret TOWN_DATA_GZ（gzip + base64 的 data.js）还原。
+      # 没配置 Secret 时跳过，页面会自动回退到 data/data.sample.js 的虚构示例数据。
+      - name: Inject member data
+        env:
+          TOWN_DATA_GZ: ${{ secrets.TOWN_DATA_GZ }}
+        run: |
+          if [ -n "$TOWN_DATA_GZ" ]; then
+            printf '%s' "$TOWN_DATA_GZ" | base64 -d | gunzip > data/data.js
+            echo "member data injected ($(wc -c < data/data.js) bytes)"
+          else
+            echo "no TOWN_DATA_GZ secret, using sample data"
+          fi
+      - name: Assemble site
+        run: |
+          mkdir _site
+          cp -R index.html style.css js data assets CREDITS.md _site/
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#5a3a1e">
+  <meta name="description" content="十一楼小镇：第 11 组 38 位村民的像素农场小镇。">
+  <title>十一楼小镇 · 第 11 组</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#townMap">跳到小镇地图</a>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="#top" aria-label="回到十一楼小镇顶部">
+        <span class="brand-mark" aria-hidden="true">11</span>
+        <span class="brand-text">
+          <strong>十一楼小镇</strong>
+          <small>第 11 组 · 云公寓</small>
+        </span>
+      </a>
+      <nav class="topnav" aria-label="小镇导航">
+        <button type="button" class="nav-btn" data-open="roster">
+          <span class="nav-icon" aria-hidden="true">☰</span>
+          <span>村民名册</span><span class="nav-count">38</span>
+        </button>
+        <button type="button" class="nav-btn" data-open="board">
+          <span class="nav-icon" aria-hidden="true">▤</span>
+          <span>公告栏</span>
+        </button>
+        <button type="button" class="nav-btn nav-btn-hot" data-open="tasks">
+          <span class="nav-icon" aria-hidden="true">✦</span>
+          <span>想找我们？</span>
+        </button>
+        <button type="button" class="nav-btn music-btn" id="musicToggle" aria-pressed="false" aria-label="开关背景音乐">
+          <span class="nav-icon music-note" id="musicIcon" aria-hidden="true">♪</span>
+          <span id="musicLabel">音乐</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="heroTitle">
+      <div class="hero-copy">
+        <p class="eyebrow">WELCOME TO · PIXEL TOWN</p>
+        <h1 id="heroTitle">把想法，<br><span>种成一座小镇。</span></h1>
+        <p class="hero-desc">第 11 组的 38 位村民，住在 7 个角落。我们像一群把 AI 当新玩具的探索者，也在认真生活。</p>
+        <div class="hero-tags" aria-label="小镇关键词">
+          <span>不同专业</span><span>不同年级</span><span>一起动手</span>
+        </div>
+      </div>
+      <aside class="hero-side" aria-label="小镇数据与快速入口">
+        <div class="stat-grid">
+          <div class="stat"><strong>38</strong><span>位村民</span></div>
+          <div class="stat"><strong>7</strong><span>个角落</span></div>
+          <div class="stat"><strong>01</strong><span>位镇长</span></div>
+        </div>
+        <div class="hero-quick">
+          <button type="button" class="wood-btn" data-open="board">看公告栏 <span aria-hidden="true">→</span></button>
+          <button type="button" class="wood-btn wood-btn-ghost" data-open="tasks">想找我们？ <span aria-hidden="true">→</span></button>
+        </div>
+        <p class="hero-note">不用赶路。点开一个角落，和谁聊两句。</p>
+      </aside>
+      <div class="hero-field" aria-hidden="true"></div>
+    </section>
+
+    <section class="map-section" aria-labelledby="mapTitle">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">THE TOWN MAP</p>
+          <h2 id="mapTitle">小镇总览</h2>
+        </div>
+        <div class="map-head-tools">
+          <div class="town-clock" id="townClock" aria-label="小镇时间">
+            <span class="clock-icon" id="clockIcon" aria-hidden="true">☀</span>
+            <div class="clock-copy"><strong id="clockTime">08:00</strong><small id="clockWeather">晴 · 小镇时间</small></div>
+          </div>
+          <p class="map-hint"><span class="blink-dot" aria-hidden="true"></span>点击区域进入 · 点击小人直接聊天</p>
+        </div>
+      </div>
+
+      <div class="map-frame">
+        <div class="frame-nail nw" aria-hidden="true"></div>
+        <div class="frame-nail ne" aria-hidden="true"></div>
+        <div class="frame-nail sw" aria-hidden="true"></div>
+        <div class="frame-nail se" aria-hidden="true"></div>
+        <div class="map-wrap" id="mapWrap">
+          <canvas id="mapCanvas" aria-label="十一楼小镇俯视地图：7 个区域和 1 栋空房子"></canvas>
+          <div class="zone-labels" id="zoneLabels"></div>
+          <div class="map-tooltip" id="mapTooltip" aria-hidden="true"></div>
+          <div class="map-toast" id="mapToast" role="status" aria-live="polite"></div>
+        </div>
+        <div class="map-footer">
+          <span><i class="pixel-dot green" aria-hidden="true"></i>小人在各自区域慢慢溜达</span>
+          <span><i class="pixel-dot gold" aria-hidden="true"></i>点击木牌也能进入</span>
+        </div>
+        <div class="zone-chips" id="zoneChips" aria-label="区域快捷入口"></div>
+      </div>
+    </section>
+
+    <section class="team-strip" aria-labelledby="teamTitle">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">WHO WE ARE</p>
+          <h2 id="teamTitle">这群人，合起来是什么样</h2>
+        </div>
+        <button type="button" class="text-btn" data-open="board">完整公告栏 →</button>
+      </div>
+      <div class="team-cards" id="teamCards"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <p class="footer-title">十一楼小镇 <span>·</span> 第 11 组</p>
+        <p class="footer-copy">地面、建筑和小人来自仓库内的 CC0 像素素材，光影、粒子与界面由 Canvas / CSS 原创绘制。</p>
+      </div>
+      <div class="footer-connect">
+        <p>入群方式：飞书『第四期云公寓十一楼』</p>
+        <button type="button" class="wood-btn" data-open="tasks">想找我们？看任务板 <span aria-hidden="true">→</span></button>
+      </div>
+    </div>
+    <p class="footer-fine">愿我们都能从一个小点子，走到能用的东西。</p>
+  </footer>
+
+  <!-- 开场 -->
+  <div class="intro" id="intro" role="dialog" aria-modal="true" aria-label="欢迎来到十一楼小镇">
+    <canvas id="introCanvas" aria-hidden="true"></canvas>
+    <div class="intro-vignette" aria-hidden="true"></div>
+    <div class="intro-content">
+      <p class="intro-kicker">第 11 组 · 云公寓</p>
+      <div class="intro-title-wrap">
+        <p class="intro-welcome">欢迎来到</p>
+        <h1 class="intro-title">十一楼小镇</h1>
+        <p class="intro-sub">第 <span>11</span> 组 · 38 位村民的像素农场</p>
+      </div>
+      <div class="intro-dialog" id="introDialog">
+        <div class="intro-portrait"><canvas id="introAvatar" width="96" height="112" aria-hidden="true"></canvas></div>
+        <div class="intro-dialog-body">
+          <div class="intro-dialog-head"><strong id="introName">镇长</strong><span>十一楼镇长</span></div>
+          <p class="intro-text" id="introText"></p>
+        </div>
+      </div>
+      <div class="intro-actions">
+        <button type="button" class="wood-btn" id="enterTownBtn">进入小镇 <span aria-hidden="true">→</span></button>
+        <button type="button" class="intro-skip" id="skipIntroBtn">跳过开场</button>
+      </div>
+      <p class="intro-tip">点击任意位置跳过 · 小镇会自动开门</p>
+    </div>
+    <div class="intro-progress" aria-hidden="true"><span id="introProgress"></span></div>
+  </div>
+
+  <!-- 场景 -->
+  <section class="scene-view" id="sceneView" aria-hidden="true" aria-label="场景视图">
+    <canvas id="sceneCanvas"></canvas>
+    <div class="scene-topbar">
+      <button type="button" class="wood-btn back-btn" id="backToTown">← 回小镇</button>
+      <div class="scene-heading">
+        <span class="scene-icon" id="sceneIcon" aria-hidden="true">📚</span>
+        <div>
+          <h2 id="sceneTitle">图书馆</h2>
+          <p id="sceneTagline">安静、文学、考试搭子</p>
+        </div>
+      </div>
+      <div class="scene-actions">
+        <button type="button" class="wood-btn small-btn" id="sceneBoardBtn" hidden>公告栏</button>
+        <span class="scene-count" id="sceneCount">5 位村民</span>
+      </div>
+    </div>
+    <div class="scene-labels" id="sceneLabels"></div>
+    <div class="scene-hint" id="sceneHint">点击村民开始聊天 · 空格翻页 · Esc 返回</div>
+    <div class="scene-toast" id="sceneToast" role="status" aria-live="polite"></div>
+
+    <!-- 对话框 -->
+    <div class="dialog" id="dialog" aria-hidden="true">
+      <div class="dialog-frame" id="dialogFrame">
+        <div class="dialog-portrait">
+          <canvas id="dialogAvatar" width="120" height="144" aria-hidden="true"></canvas>
+          <span class="portrait-shine" aria-hidden="true"></span>
+        </div>
+        <div class="dialog-body">
+          <div class="dialog-head">
+            <div class="dialog-name-row">
+              <h3 id="dialogName">村民</h3>
+              <span class="dialog-title" id="dialogTitle">称号</span>
+            </div>
+            <span class="dialog-room" id="dialogRoom">02 号房</span>
+          </div>
+          <p class="dialog-text" id="dialogText" aria-live="polite"></p>
+          <div class="dialog-foot">
+            <span class="page-dots" id="dialogPages" aria-hidden="true"></span>
+            <span class="dialog-next" id="dialogNext">点击继续 ▸</span>
+            <button type="button" class="wood-btn small-btn" id="openCardBtn" hidden>查看名片 <span aria-hidden="true">→</span></button>
+          </div>
+        </div>
+        <button type="button" class="dialog-close" id="closeDialogBtn" aria-label="关闭对话">×</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 名册 -->
+  <div class="modal-layer" id="rosterModal" aria-hidden="true">
+    <div class="modal roster-modal" role="dialog" aria-modal="true" aria-labelledby="rosterTitle">
+      <button type="button" class="modal-close" data-close="rosterModal" aria-label="关闭名册">×</button>
+      <div class="modal-head">
+        <p class="eyebrow">VILLAGER INDEX</p>
+        <h2 id="rosterTitle">村民名册 <span class="modal-count" id="rosterCount">38</span></h2>
+        <p>38 位村民，散在 7 个角落。点一个名字，直接飞过去。</p>
+      </div>
+      <div class="roster-tools">
+        <label class="search-box">
+          <span aria-hidden="true">⌕</span>
+          <input type="search" id="rosterSearch" placeholder="搜名字……" autocomplete="off">
+        </label>
+        <div class="filter-row" id="rosterFilters" role="group" aria-label="按场景筛选"></div>
+      </div>
+      <div class="roster-grid" id="rosterGrid"></div>
+      <p class="modal-note" id="rosterEmpty" hidden>没有找到这个名字，换个写法试试。</p>
+      <p class="modal-note">名册里也包含 01 号房的镇长。</p>
+    </div>
+  </div>
+
+  <!-- 公告栏 -->
+  <div class="modal-layer" id="boardModal" aria-hidden="true">
+    <div class="modal board-modal" role="dialog" aria-modal="true" aria-labelledby="boardTitle">
+      <button type="button" class="modal-close" data-close="boardModal" aria-label="关闭公告栏">×</button>
+      <div class="modal-head">
+        <p class="eyebrow">TOWN NOTICE BOARD</p>
+        <h2 id="boardTitle">小镇公告栏</h2>
+        <p>团队画像、三条约定、我们想被记住的词，还有大家互相看见的话。</p>
+      </div>
+      <div class="notice-board">
+        <section class="pin-card portrait-card" aria-labelledby="portraitHeading">
+          <span class="pin" aria-hidden="true"></span>
+          <h3 id="portraitHeading">团队画像</h3>
+          <div id="portraitLines"></div>
+        </section>
+        <section class="pin-card rules-card" aria-labelledby="rulesHeading">
+          <span class="pin" aria-hidden="true"></span>
+          <h3 id="rulesHeading">三条约定</h3>
+          <ol id="ruleList"></ol>
+        </section>
+        <section class="pin-card word-card" aria-labelledby="wordHeading">
+          <span class="pin" aria-hidden="true"></span>
+          <h3 id="wordHeading">词墙</h3>
+          <div class="word-cloud" id="wordCloud"></div>
+          <p class="word-note"><span>我们希望被记住的词</span><strong id="wordFooter"></strong></p>
+        </section>
+        <section class="pin-card praise-card" aria-labelledby="praiseHeading">
+          <span class="pin" aria-hidden="true"></span>
+          <div class="praise-head">
+            <h3 id="praiseHeading">互夸墙</h3>
+            <span class="modal-count" id="praiseCount">0 条</span>
+          </div>
+          <p class="praise-sub">大家这样夸我，我夸了谁——都被贴在墙上。</p>
+          <div class="praise-scroll" id="praiseWall"></div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- 任务板 -->
+  <div class="modal-layer" id="tasksModal" aria-hidden="true">
+    <div class="modal tasks-modal" role="dialog" aria-modal="true" aria-labelledby="tasksTitle">
+      <button type="button" class="modal-close" data-close="tasksModal" aria-label="关闭任务板">×</button>
+      <div class="modal-head">
+        <p class="eyebrow">QUEST BOARD</p>
+        <h2 id="tasksTitle">想找我们？</h2>
+        <p>按你现在想做的事选一格。点一下，直接飞到对应的角落。</p>
+      </div>
+      <div class="task-list" id="taskList"></div>
+      <div class="join-note">
+        <span class="join-icon" aria-hidden="true">✉</span>
+        <div>
+          <strong>入群方式</strong>
+          <p>飞书『第四期云公寓十一楼』</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 名片 -->
+  <div class="modal-layer card-layer" id="cardModal" aria-hidden="true">
+    <div class="modal card-modal" role="dialog" aria-modal="true" aria-labelledby="cardName">
+      <button type="button" class="modal-close" data-close="cardModal" aria-label="关闭名片">×</button>
+      <div class="card-layout">
+        <aside class="card-side">
+          <div class="card-avatar-wrap">
+            <canvas id="cardAvatar" width="168" height="196" aria-hidden="true"></canvas>
+            <span class="card-stamp" id="cardRoomStamp">02 号房</span>
+          </div>
+          <div class="card-identity">
+            <p class="card-kicker" id="cardKicker">十一楼小镇 · 村民</p>
+            <h2 id="cardName">村民</h2>
+            <p class="card-title" id="cardTitle">称号</p>
+            <p class="card-word" id="cardWord" hidden></p>
+          </div>
+          <button type="button" class="wood-btn card-find-btn" id="cardFindBtn">去 Ta 的场景 <span aria-hidden="true">→</span></button>
+        </aside>
+        <div class="card-main">
+          <div class="card-fields" id="cardFields"></div>
+          <section class="card-section" id="cardPhotosSection" hidden>
+            <h3>照片墙小故事</h3>
+            <div class="photo-stories" id="cardPhotos"></div>
+          </section>
+          <div class="card-praise-grid">
+            <section class="card-section" id="cardReceivedSection">
+              <h3>大家这样夸我</h3>
+              <ul class="praise-list" id="cardReceived"></ul>
+            </section>
+            <section class="card-section" id="cardGivenSection">
+              <h3>我夸了</h3>
+              <ul class="praise-list" id="cardGiven"></ul>
+            </section>
+          </div>
+          <p class="card-footnote" id="cardFootnote">点名字可以跳到对方的名片。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- 真实成员数据 data/data.js 不进仓库（部署时由 GitHub Actions 注入）；缺失时回退到虚构示例数据 -->
+  <script src="data/data.js" onerror="this.remove()"></script>
+  <script>if (!window.TOWN_DATA) document.write('<script src="data/data.sample.js"><\/script>');</script>
+  <script src="js/art.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

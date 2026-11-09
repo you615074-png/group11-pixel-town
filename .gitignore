@@ -1,0 +1,15 @@
+dsh-build.log
+dsh-build.err
+.DS_Store
+assets/_grid.html
+assets/_mapview.html
+dsh-build2.log
+dsh-build2.err
+_review/
+dsh-build3.log
+dsh-build3.err
+data/members.raw.json
+
+# 真实成员数据：只留本地，部署时由 Actions 从 Secret 注入
+data/data.js
+data/town.json
